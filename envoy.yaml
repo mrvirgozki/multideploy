@@ -16,18 +16,19 @@ static_resources:
               routes:
               - match: { prefix: "/virgozki" }
                 route:
-                  cluster: xray_all
+                  cluster: xray_main
                   timeout: 0s
                   idle_timeout: 86400s
                   upgrade_configs: [ { upgrade_type: websocket } ]
           http_filters: [ { name: envoy.filters.http.router, typed_config: { "@type": type.googleapis.com/envoy.extensions.filters.http.router.v3.Router" } } ]
+
   clusters:
-  - name: xray_all
+  - name: xray_main
     connect_timeout: 5s
     type: STRICT_DNS
     lb_policy: ROUND_ROBIN
     load_assignment:
-      cluster_name: xray_all
+      cluster_name: xray_main
       endpoints:
       - lb_endpoints:
         - endpoint: { address: { socket_address: { address: 127.0.0.1, port_value: 10000 } } }
