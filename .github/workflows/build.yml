@@ -28,4 +28,4 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: mrvirgozki/multideploy:latest
+          tags: mrvirgozki/multideployy:latest
