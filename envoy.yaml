@@ -17,13 +17,26 @@ static_resources:
             - name: all_hosts
               domains: ["*"]
               routes:
-              - match: { prefix: "/virgozki" }
-                route:
-                  cluster: xray_vless
-                  timeout: 0s
-                  idle_timeout: 86400s
-                  upgrade_configs:
-                  - upgrade_type: websocket
+              - match: { prefix: "/vless-virgozki" }
+                route: { cluster: xray_vless, timeout: 0s, idle_timeout: 86400s }
+                request_headers_to_add:
+                - header: { key: "Upgrade", value: "websocket" }
+                - header: { key: "Connection", value: "Upgrade" }
+              - match: { prefix: "/vmess-virgozki" }
+                route: { cluster: xray_vmess, timeout: 0s, idle_timeout: 86400s }
+                request_headers_to_add:
+                - header: { key: "Upgrade", value: "websocket" }
+                - header: { key: "Connection", value: "Upgrade" }
+              - match: { prefix: "/trojan-virgozki" }
+                route: { cluster: xray_trojan, timeout: 0s, idle_timeout: 86400s }
+                request_headers_to_add:
+                - header: { key: "Upgrade", value: "websocket" }
+                - header: { key: "Connection", value: "Upgrade" }
+              - match: { prefix: "/ss-virgozki" }
+                route: { cluster: xray_ss, timeout: 0s, idle_timeout: 86400s }
+                request_headers_to_add:
+                - header: { key: "Upgrade", value: "websocket" }
+                - header: { key: "Connection", value: "Upgrade" }
           http_filters:
           - name: envoy.filters.http.router
             typed_config:
@@ -40,10 +53,7 @@ static_resources:
       - lb_endpoints:
         - endpoint:
             address:
-              socket_address:
-                address: 127.0.0.1
-                port_value: 10001
-
+              socket_address: { address: 127.0.0.1, port_value: 10001 }
   - name: xray_vmess
     connect_timeout: 3s
     type: STRICT_DNS
@@ -54,10 +64,7 @@ static_resources:
       - lb_endpoints:
         - endpoint:
             address:
-              socket_address:
-                address: 127.0.0.1
-                port_value: 10002
-
+              socket_address: { address: 127.0.0.1, port_value: 10002 }
   - name: xray_trojan
     connect_timeout: 3s
     type: STRICT_DNS
@@ -68,10 +75,7 @@ static_resources:
       - lb_endpoints:
         - endpoint:
             address:
-              socket_address:
-                address: 127.0.0.1
-                port_value: 10003
-
+              socket_address: { address: 127.0.0.1, port_value: 10003 }
   - name: xray_ss
     connect_timeout: 3s
     type: STRICT_DNS
@@ -82,6 +86,4 @@ static_resources:
       - lb_endpoints:
         - endpoint:
             address:
-              socket_address:
-                address: 127.0.0.1
-                port_value: 10004
+              socket_address: { address: 127.0.0.1, port_value: 10004 }
