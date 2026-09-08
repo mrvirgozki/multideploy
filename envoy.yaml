@@ -11,6 +11,8 @@ static_resources:
         typed_config:
           "@type": type.googleapis.com/envoy.extensions.filters.network.http_connection_manager.v3.HttpConnectionManager
           stat_prefix: ingress_http
+          upgrade_configs:
+          - upgrade_type: websocket  # ✅ Proper WS support
           route_config:
             name: local_route
             virtual_hosts:
@@ -19,24 +21,12 @@ static_resources:
               routes:
               - match: { prefix: "/vless-virgozki" }
                 route: { cluster: xray_vless, timeout: 0s, idle_timeout: 86400s }
-                request_headers_to_add:
-                - header: { key: "Upgrade", value: "websocket" }
-                - header: { key: "Connection", value: "Upgrade" }
               - match: { prefix: "/vmess-virgozki" }
                 route: { cluster: xray_vmess, timeout: 0s, idle_timeout: 86400s }
-                request_headers_to_add:
-                - header: { key: "Upgrade", value: "websocket" }
-                - header: { key: "Connection", value: "Upgrade" }
               - match: { prefix: "/trojan-virgozki" }
                 route: { cluster: xray_trojan, timeout: 0s, idle_timeout: 86400s }
-                request_headers_to_add:
-                - header: { key: "Upgrade", value: "websocket" }
-                - header: { key: "Connection", value: "Upgrade" }
               - match: { prefix: "/ss-virgozki" }
                 route: { cluster: xray_ss, timeout: 0s, idle_timeout: 86400s }
-                request_headers_to_add:
-                - header: { key: "Upgrade", value: "websocket" }
-                - header: { key: "Connection", value: "Upgrade" }
           http_filters:
           - name: envoy.filters.http.router
             typed_config:
@@ -44,8 +34,8 @@ static_resources:
 
   clusters:
   - name: xray_vless
-    connect_timeout: 3s
-    type: STRICT_DNS
+    connect_timeout: 10s  # ✅ Mas mahaba para hindi agad maputol
+    type: STATIC  # ✅ Hindi na kailangan ng DNS
     lb_policy: ROUND_ROBIN
     load_assignment:
       cluster_name: xray_vless
@@ -55,8 +45,8 @@ static_resources:
             address:
               socket_address: { address: 127.0.0.1, port_value: 10001 }
   - name: xray_vmess
-    connect_timeout: 3s
-    type: STRICT_DNS
+    connect_timeout: 10s
+    type: STATIC
     lb_policy: ROUND_ROBIN
     load_assignment:
       cluster_name: xray_vmess
@@ -66,8 +56,8 @@ static_resources:
             address:
               socket_address: { address: 127.0.0.1, port_value: 10002 }
   - name: xray_trojan
-    connect_timeout: 3s
-    type: STRICT_DNS
+    connect_timeout: 10s
+    type: STATIC
     lb_policy: ROUND_ROBIN
     load_assignment:
       cluster_name: xray_trojan
@@ -77,8 +67,8 @@ static_resources:
             address:
               socket_address: { address: 127.0.0.1, port_value: 10003 }
   - name: xray_ss
-    connect_timeout: 3s
-    type: STRICT_DNS
+    connect_timeout: 10s
+    type: STATIC
     lb_policy: ROUND_ROBIN
     load_assignment:
       cluster_name: xray_ss
