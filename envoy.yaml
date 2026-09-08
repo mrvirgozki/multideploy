@@ -43,8 +43,7 @@ static_resources:
               socket_address:
                 address: 127.0.0.1
                 port_value: 10001
-  # Kung gusto mo gamitin ang iba pang protocol, i-add mo lang ang clusters na ito:cluster:
-  cluster:
+
   - name: xray_vmess
     connect_timeout: 3s
     type: STRICT_DNS
@@ -53,36 +52,36 @@ static_resources:
       cluster_name: xray_vmess
       endpoints:
       - lb_endpoints:
-         - endpoint:
-             address: 
-                socket_address:
-                  address: 127.0.0.1
-                  port_value: 10002
-     cluster:
-       - name: xray_trojan
-         connect_timeout: 3s
-          type: STRICT_DNS
-          lb_policy: ROUND_ROBIN
-          load_assignment:
-            cluster_name: xray_trojan
-            endpoints:
-           - lb_endpoints:
-             - endpoint:
-                 address:
-                   socket_address: 
-                     address: 127.0.0.1
-                     port_value: 10003
-      cluster:
-     - name: xray_ss
-        connect_timeout: 3s
-        type: STRICT_DNS
-        lb_policy: ROUND_ROBIN
-        load_assignment:
-        cluster_name: xray_ss
-        endpoints:
-       - lb_endpoints:
-         - endpoint:
-             address: 
-               socket_address:
-                address: 127.0.0.1 
-                port_value: 10004 
+        - endpoint:
+            address:
+              socket_address:
+                address: 127.0.0.1
+                port_value: 10002
+
+  - name: xray_trojan
+    connect_timeout: 3s
+    type: STRICT_DNS
+    lb_policy: ROUND_ROBIN
+    load_assignment:
+      cluster_name: xray_trojan
+      endpoints:
+      - lb_endpoints:
+        - endpoint:
+            address:
+              socket_address:
+                address: 127.0.0.1
+                port_value: 10003
+
+  - name: xray_ss
+    connect_timeout: 3s
+    type: STRICT_DNS
+    lb_policy: ROUND_ROBIN
+    load_assignment:
+      cluster_name: xray_ss
+      endpoints:
+      - lb_endpoints:
+        - endpoint:
+            address:
+              socket_address:
+                address: 127.0.0.1
+                port_value: 10004
