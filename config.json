@@ -1,0 +1,40 @@
+{
+  "log": {
+    "loglevel": "warn"
+  },
+  "inbounds": [
+    {
+      "port": 10001,
+      "listen": "127.0.0.1",
+      "protocol": "vless",
+      "settings": {
+        "clients": [{"id": "15f7e8ea-7b56-45d4-93af-31f3c592fdf1", "flow": ""}],
+        "decryption": "none"
+      },
+      "streamSettings": {"network": "ws", "wsSettings": {"path": "/virgozki"}},
+      "sniffing": {"enabled": true, "destOverride": ["http", "tls"]}
+    },
+    {
+      "port": 10002,
+      "listen": "127.0.0.1",
+      "protocol": "vmess",
+      "settings": {"clients": [{"id": "15f7e8ea-7b56-45d4-93af-31f3c592fdf1", "alterId": 0}]},
+      "streamSettings": {"network": "ws", "wsSettings": {"path": "/virgozki"}}
+    },
+    {
+      "port": 10003,
+      "listen": "127.0.0.1",
+      "protocol": "trojan",
+      "settings": {"clients": [{"password": "Virgozki!"}]},
+      "streamSettings": {"network": "ws", "wsSettings": {"path": "/virgozki"}}
+    },
+    {
+      "port": 10004,
+      "listen": "127.0.0.1",
+      "protocol": "shadowsocks",
+      "settings": {"clients": [{"method": "aes-256-gcm", "password": "Virgozki!"}], "network": "tcp,udp"},
+      "streamSettings": {"network": "ws", "wsSettings": {"path": "/virgozki"}}
+    }
+  ],
+  "outbounds": [{"protocol": "freedom"}]
+}
