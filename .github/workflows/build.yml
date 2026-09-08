@@ -8,28 +8,24 @@ on:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
 
     steps:
-      - name: 📥 Checkout repository
+      - name: Checkout files
         uses: actions/checkout@v4
 
-      - name: 🛠️ Set up Docker Buildx
+      - name: Set up Docker
         uses: docker/setup-buildx-action@v3
 
-      - name: 🔐 Login to Docker Hub
+      - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_TOKEN }}
 
-      - name: 🏗️ Build at Push Image
-        uses: docker/build-push-action@v6 # Updated to latest v6
+      - name: Build and Push
+        uses: docker/build-push-action@v5
         with:
           context: .
           file: ./Dockerfile
           push: true
           tags: mrvirgozki/multideploy:latest
-          cache-from: type=registry,ref=mrvirgozki/multideploy:buildcache
-          cache-to: type=registry,ref=mrvirgozki/multideploy:buildcache,mode=max
