@@ -1,12 +1,6 @@
 {
-  "log": {"loglevel": "warn"},
+  "log": {"loglevel": "info"},
   "inbounds": [
-    {
-      "port": 10000,
-      "listen": "127.0.0.1",
-      "protocol": "dokodemo-door",
-      "settings": {"address": "127.0.0.1", "port": 10000, "network": "tcp,udp"}
-    },
     {
       "port": 10000,
       "listen": "127.0.0.1",
